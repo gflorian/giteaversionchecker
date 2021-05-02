@@ -16,7 +16,7 @@ CURRENT=$(curl -s -X GET "http://localhost:3000/api/v1/version" -H  "accept: app
 echo -e "Your current gitea version seems to be: $CURRENT\nGitea version available online: $VERSION"
 if dpkg --compare-versions "$VERSION" gt "$CURRENT"
 	then
-		echo -e "Your version seems to be outdated.\nDo you want to upgrade? (Need to enter password)"
+		echo -e "Your version seems to be outdated.\nDo you want to upgrade? (Need to enter password for sudo)"
 		read -rn 1 YN
 		echo ""
 		if [ "$YN" == "y" ] || [ "$YN" == "Y" ] || [ "$YN" == "z" ] || [ "$YN" == "Z" ]
@@ -37,6 +37,8 @@ if dpkg --compare-versions "$VERSION" gt "$CURRENT"
 				sudo ls -lLah $GITEA_BIN_DIR/gitea
 				echo "Starting gitea again."
 				sudo systemctl start gitea
+			else
+				echo "Aborted on user request."
 		fi
 	else
 		echo "Your version seems to be up to date. No need to update!"
