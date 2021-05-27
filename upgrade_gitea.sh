@@ -6,7 +6,7 @@ cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 if [ -z "$1" ]
   then
-    VERSION=$(curl -s -S https://dl.gitea.io/charts/index.yaml | grep appVersion | head -n 1 | awk '{print $2}')
+    VERSION=$(curl -L -s -S https://dl.gitea.io/charts/index.yaml | grep appVersion | head -n 1 | awk '{print $2}')
   else
     VERSION=$1
 fi
