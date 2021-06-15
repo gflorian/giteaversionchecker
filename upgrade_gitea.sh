@@ -24,7 +24,7 @@ if dpkg --compare-versions "$VERSION" gt "$CURRENT"
 				URL=https://dl.gitea.io/gitea/$VERSION/gitea-$VERSION-$ARCH
 				FILENAME="$(basename "$URL")"
 				echo "Downloading file ..."
-				curl -O "$URL"
+				curl -L -O "$URL"
 				echo "This is what we've downloaded:"
 				ls -lLah ./"$FILENAME"
 				echo "Backing up gitea."
