@@ -2,6 +2,7 @@
 BASEURL=https://dl.gitea.io/gitea
 ARCH="linux-amd64"
 GITEA_BIN_DIR="/usr/local/bin"
+#GITEA_Bin=$(grep ExecStart /etc/systemd/system/gitea.service | awk '{split($0,a," "); split(a[1],b,"=")} END{print b[2]}')#extract gitea's location from service file
 
 #cd into directory where the script lives
 cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
@@ -9,7 +10,7 @@ cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 #Get version number of latest release
 if [ -z "$1" ]
   then
-    VERSION=$(curl -L -s -S $BASEURL -o - | grep '>Current Release' | awk '{split($0,a,"Release "); split(a[2],b,"<")} END{print b[1]}')
+    VERSION=$(curl -L -s -S -H "Accept: application/json" $BASEURL | jq -M '.' | grep 'Current Release' | awk '{split($0,a," "); split(a[4],b,"\"")} END{print b[1]}')
   else
     VERSION=$1
 fi
@@ -20,7 +21,7 @@ CODE=$(curl -L -s -S -w "%{http_code}" -O $URL.sha256)
 
 if [ "$CODE" -ne 200 ]
 	then
-		echo "Version $VERSION does not exist online!"
+		echo "Version $VERSION does not have a sha256 sum online! This probably means this version of gitea is not available."
 		exit 1
 fi
 
