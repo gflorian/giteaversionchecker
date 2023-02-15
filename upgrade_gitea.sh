@@ -10,7 +10,7 @@ cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 #Get version number of latest release
 if [ -z "$1" ]
   then
-    VERSION=$(curl -L -s -S -H "Accept: application/json" $BASEURL | jq -M '.' | grep 'Current Release' | awk '{split($0,a," "); split(a[4],b,"\"")} END{print b[1]}')
+    VERSION=$(curl -L -s -S $BASEURL/version.json | jq -M '.' | grep 'version' | awk '{split($0,b,"\"")} END{print b[4]}')
   else
     VERSION=$1
 fi
